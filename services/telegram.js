@@ -1,11 +1,11 @@
 // Only AI report bot — raw TG messages handled by extension directly
 
 const BOT_TOKEN = process.env.AI_BOT_TOKEN
-const CHAT_ID   = process.env.AI_CHAT_ID
+const CHAT_ID = process.env.AI_CHAT_ID
 
 function splitChunks(text, maxLen = 4000) {
     const chunks = []
-    let current  = ''
+    let current = ''
     for (const line of text.split('\n')) {
         if (current.length + line.length + 1 > maxLen) {
             if (current) chunks.push(current.trim())
@@ -29,12 +29,11 @@ async function sendMessage(text) {
     for (const chunk of chunks) {
         try {
             const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-                method:  'POST',
+                method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body:    JSON.stringify({
-                    chat_id:    CHAT_ID,
-                    text:       chunk,
-                    parse_mode: 'Markdown'
+                body: JSON.stringify({
+                    chat_id: CHAT_ID,
+                    text: chunk
                 })
             })
             const data = await res.json()
